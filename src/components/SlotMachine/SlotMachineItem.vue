@@ -33,6 +33,9 @@ export default {
             const list = Object.assign([], this.list).sort(() => 0.5 - Math.random());
             return list.concat(list).concat(list).concat(list).concat(list);
         },
+        nodes() {
+            return this.$el.getElementsByTagName('li');
+        }
     },
     watch: {
         updateFlag() {
@@ -61,7 +64,7 @@ export default {
     mounted() {
         setTimeout(() => {
             //Webpack开发模式使用style-loader插入样式时，不延时会导致计算不准
-            const itemHeight = this.$el.getElementsByTagName('li')[0].clientHeight;
+            const itemHeight = this.nodes[0].clientHeight;
             this.itemHeight = itemHeight;
             this.offsetY = (this.$el.clientHeight - itemHeight) / 2;
             this.translateY = this.getDefaultY();
@@ -72,7 +75,7 @@ export default {
     },
     methods: {
         getDefaultY() {
-            return -((this.list.length - 1) * this.itemHeight + this.offsetY);
+            return -(this.nodes[this.list.length - 1].offsetTop + this.offsetY);
         },
         getStartY(id) {
             let find = 0;
@@ -80,7 +83,7 @@ export default {
                 if (this.items[i].id == id) {
                     find++;
                     if (find == 2) {
-                        return -((i - 1) * this.itemHeight + this.offsetY);
+                        return -(this.nodes[i - 1].offsetTop + this.offsetY);
                     }
                 }
             }
@@ -91,7 +94,7 @@ export default {
                 if (this.items[i].id == id) {
                     find++;
                     if (find == 2) {
-                        return -((i - 1) * this.itemHeight + this.offsetY);
+                        return -(this.nodes[i - 1].offsetTop + this.offsetY);
                     }
                 }
             }

@@ -32,6 +32,7 @@ import api from "../api/apiConfig.js"
 import Loading from "../components/Loading.vue"
 import APP from "../utils/openApp.js"
 export default {
+    components:{MyMarquee,TurnTable,CionButtoms,WardsToast,Loading},
     data(){
         return{
             activeMsg:{},
@@ -80,7 +81,7 @@ export default {
             var contentScrollTop = this.$refs.wardsToast.$refs.wardContent.scrollTop
             var contentScrollHeight = this.$refs.wardsToast.$refs.wardContent.scrollHeight
             var that = this
-            if(contentScrollHeight - contentScrollTop <=conentHight){ // conentHight + contentScrollTop === contentScrollHeight
+            if(contentScrollHeight - contentScrollTop <= conentHight){ // conentHight + contentScrollTop >= contentScrollHeight -100 寬鬆寫法
                 if(that.moreList){
                     that.moreList = false
                     that.historyNum = that.historyList.length
@@ -132,13 +133,6 @@ export default {
         goShare(){
             APP()
         }
-    },
-    components:{
-        MyMarquee,
-        TurnTable,
-        CionButtoms,
-        WardsToast,
-        Loading
     }
 }
 </script>

@@ -1,7 +1,8 @@
 <template>
     <div class="sloat">
         <SlotMachine @end="onEnd" :size="3" :list="list" :result="result" />
-        <img :src="require('../../assets/img/'+imgindex+'.png')" alt="" class="handle">
+        <div class="handle" :style="{'background-position-Y':imgPos[imgindex]}"></div>
+        <!-- <img :src="require('../../assets/img/'+imgindex+'.png')" alt="" class="handle"> -->
         <min-wards-toast v-show="showMinToast" @hideToast="hideToast()"></min-wards-toast>
         <msg-toast :msg="tastMsg" @closeToast="closeToast()" v-show="showT"></msg-toast>
     </div>
@@ -50,12 +51,15 @@ export default {
                 {id:29,src:require("../../assets/img/ward21.png")},
                 ],
             result: [],
-            imgindex:1,
+            imgindex:0,
             drawSwitch:true,    // 抽奖开关，避免重复抽奖
             timerSet:0,
             showMinToast:false,  //弹窗开关
             tastMsg:'',       //弹窗提示
-            showT:false
+            showT:false,
+            imgPos:[
+                "-.1rem","-2.5rem","-4.83rem","-7.2rem","-9.56rem","-7.2rem","-4.83rem","-2.5rem","-.1rem"
+            ]
         };
     },
     computed:{
@@ -77,7 +81,6 @@ export default {
         },
         startGame() {
             var that = this
-            var doas = "add"
             if(that.isShare){ //分享模式下打开APP
                 APP()
                 return
@@ -98,17 +101,12 @@ export default {
                             that.result = lotterylist       //开启奖品滚动效果
                         }
                     })
-                    that.timerSet = setInterval(function(){ //把手动画开始
-                        if(that.imgindex  === 5){
-                            doas = "jian"
-                        }
-                        if(doas === "add"){
-                            that.imgindex++
-                        }else if(doas === "jian"){
-                            that.imgindex--
-                        }
-                        if(that.imgindex == 1){
-                            clearInterval(that.timerSet)
+                    if(this.imgindex !== 0)return
+                    this.timerSet = setInterval(() =>{ //把手动画开始
+                        this.imgindex++
+                        if(this.imgindex >= this.imgPos.length){
+                            this.imgindex = 0
+                            clearInterval(this.timerSet)
                         }
                     },100)
                 }
@@ -167,8 +165,10 @@ button {
 }
 .handle{
     width: 0.56rem;
-    height: 1.86rem;
+    height: 2.56rem;
     position: absolute;
     right: -.98rem;
+    background: url(../../assets/img/handle.png) no-repeat;
+    background-size: 100% auto;
 }
 </style>

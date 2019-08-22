@@ -41,12 +41,12 @@ export default {
       let scroll = document.querySelector('.scroll')
       let copy = document.querySelector('.copy')
       copy.innerText = this.text // 文字副本填充
-      let distance = 10 // 位移距离
+      let distance = -0 // 位移距离
       // 设置位移
       this.timer = setInterval(() => {
         distance -= 1
         // 如果位移超过文字宽度，则回到起点
-        if (-distance >= width) {
+        if (-distance >= (copy.clientWidth*2) - 123) {
           distance = 16 // 距离必须与marquee的margin宽度相同
         }
         scroll.style.transform = 'translateX(' + distance + 'px)'
